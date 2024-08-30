@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manipulação de Classes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.5s ease; /* Transição suave para mudança de fundo */
+            background-color: #e0f7fa; /* Cor inicial de fundo */
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Transição suave para cor do botão */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Cores de fundo da página */
+        .background1 { background-color: #ff5722; } /* Cor de fundo inicial - laranja intenso */
+        .background2 { background-color: #4caf50; } /* Nova cor de fundo - verde intenso */
+        .background3 { background-color: #2196f3; } /* Nova cor de fundo - azul intenso */
+    </style>
+</head>
+<body class="background1">
+    <button id="toggleButton">Trocar Fundo</button>
+
+    <script>
+        // Obtém referência ao elemento body e ao botão
+        const body = document.body;
+        const toggleButton = document.getElementById('toggleButton');
+
+        // Função para trocar a cor de fundo
+        function swapBackground() {
+            if (body.classList.contains('background1')) {
+                body.classList.remove('background1');
+                body.classList.add('background2');
+            } else if (body.classList.contains('background2')) {
+                body.classList.remove('background2');
+                body.classList.add('background3');
+            } else {
+                body.classList.remove('background3');
+                body.classList.add('background1');
+            }
+        }
+
+        // Adiciona evento de clique ao botão
+        toggleButton.addEventListener('click', swapBackground);
+    </script>
+</body>
+</html>

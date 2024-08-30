@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        #taskInput {
+            width: calc(100% - 110px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        #addButton {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #addButton:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+        }
+        li.completed {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+        .button-group {
+            display: flex;
+            gap: 5px;
+        }
+        .button-group button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .complete-button {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .complete-button:hover {
+            background-color: #218838;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Tarefas</h1>
+        <input type="text" id="taskInput" placeholder="Digite uma nova tarefa">
+        <button id="addButton">Adicionar Tarefa</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        // Obtém referências aos elementos HTML
+        const taskInput = document.getElementById('taskInput');
+        const addButton = document.getElementById('addButton');
+        const taskList = document.getElementById('taskList');
+
+        // Função para criar um novo item de tarefa
+        function createTaskItem(taskText) {
+            // Cria elementos para a tarefa
+            const li = document.createElement('li');
+            const text = document.createElement('span');
+            const buttonGroup = document.createElement('div');
+            const completeButton = document.createElement('button');
+            const deleteButton = document.createElement('button');
+            
+            // Define o texto da tarefa e classes dos botões
+            text.textContent = taskText;
+            completeButton.textContent = 'Concluir';
+            deleteButton.textContent = 'Excluir';
+            completeButton.className = 'complete-button';
+            deleteButton.className = 'delete-button';
+            buttonGroup.className = 'button-group';
+
+            // Adiciona eventos aos botões
+            completeButton.addEventListener('click', () => {
+                li.classList.toggle('completed');
+                updateLocalStorage();
+            });
+            deleteButton.addEventListener('click', () => {
+                li.remove();
+                updateLocalStorage();
+            });
+
+            // Monta o item da lista
+            buttonGroup.appendChild(completeButton);
+            buttonGroup.appendChild(deleteButton);
+            li.appendChild(text);
+            li.appendChild(buttonGroup);
+            taskList.appendChild(li);
+        }
+
+        // Função para adicionar uma nova tarefa
+        function addTask() {
+            const taskText = taskInput.value.trim();
+            if (taskText === '') {
+                alert('Digite uma tarefa.');
+                return;
+            }
+            createTaskItem(taskText);
+            taskInput.value = '';
+            updateLocalStorage();
+        }
+
+        // Função para atualizar o localStorage com a lista de tarefas
+        function updateLocalStorage() {
+            const tasks = [];
+            taskList.querySelectorAll('li').forEach(li => {
+                tasks.push({
+                    text: li.querySelector('span').textContent,
+                    completed: li.classList.contains('completed')
+                });
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        // Função para carregar tarefas do localStorage
+        function loadTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.forEach(task => createTaskItem(task.text, task.completed));
+        }
+
+        // Evento de clique para adicionar a tarefa
+        addButton.addEventListener('click', addTask);
+
+        // Evento de pressionar Enter no campo de texto
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // Carrega tarefas ao inicializar
+        loadTasks();
+    </script>
+</body>
+</html>

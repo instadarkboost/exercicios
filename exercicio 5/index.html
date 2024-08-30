@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Adivinhação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .game-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            width: calc(100% - 22px);
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Jogo de Adivinhação</h1>
+        <p>Adivinhe um número entre 1 e 100:</p>
+        <input type="number" id="guessInput" min="1" max="100" placeholder="Digite seu palpite">
+        <button id="submitButton">Enviar Palpite</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // Gera um número aleatório entre 1 e 100
+        let secretNumber = Math.floor(Math.random() * 100) + 1;
+
+        // Obtém referências aos elementos HTML
+        const guessInput = document.getElementById('guessInput');
+        const submitButton = document.getElementById('submitButton');
+        const messageDiv = document.getElementById('message');
+
+        // Função para verificar o palpite
+        function checkGuess() {
+            const userGuess = Number(guessInput.value);
+
+            // Verifica se o palpite é um número válido
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                messageDiv.textContent = 'Por favor, insira um número entre 1 e 100.';
+                return;
+            }
+
+            // Compara o palpite com o número secreto
+            if (userGuess === secretNumber) {
+                messageDiv.textContent = `Parabéns! Você acertou o número ${secretNumber}!`;
+                // Gera um novo número aleatório
+                secretNumber = Math.floor(Math.random() * 100) + 1;
+                guessInput.value = '';
+                guessInput.focus();
+            } else if (userGuess < secretNumber) {
+                messageDiv.textContent = 'O número é maior. Tente novamente!';
+            } else {
+                messageDiv.textContent = 'O número é menor. Tente novamente!';
+            }
+        }
+
+        // Adiciona evento de clique ao botão
+        submitButton.addEventListener('click', checkGuess);
+
+        // Adiciona evento de pressionamento da tecla Enter no campo de entrada
+        guessInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 1: Interação com Eventos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #message {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interação com Eventos</h1>
+    <input type="text" id="textInput" placeholder="Digite algo aqui">
+    <button id="submitButton">Clique aqui</button>
+    <div id="message"></div>
+
+    <script>
+        // Obtém referências aos elementos HTML
+        const textInput = document.getElementById('textInput');
+        const submitButton = document.getElementById('submitButton');
+        const messageDiv = document.getElementById('message');
+
+        // Função para exibir a mensagem
+        function displayMessage() {
+            const inputText = textInput.value; // Obtém o valor do campo de texto
+
+            if (inputText.trim() === '') {
+                messageDiv.textContent = 'Por favor, digite algo no campo de texto.';
+            } else {
+                messageDiv.textContent = `Você digitou: ${inputText}`;
+            }
+        }
+
+        // Captura o evento de clique no botão
+        submitButton.addEventListener('click', displayMessage);
+    </script>
+</body>
+</html>
